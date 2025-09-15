@@ -17,7 +17,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: #121212;
+            background-color: #121212; /* Fallback for when video doesn't load */
             color: #f0f0f0;
             display: flex;
             justify-content: center;
@@ -25,18 +25,44 @@
             min-height: 100vh;
             text-align: center;
             padding: 1rem;
-            overflow: hidden; /* Prevent scrollbar from animation */
+            overflow: hidden; 
+        }
+
+        /* Background Video & Overlay */
+        #bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: -2;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(18, 18, 18, 0.7); /* Dark semi-transparent overlay */
+            z-index: -1;
         }
 
         /* Main Container */
         .container {
             max-width: 700px;
             width: 100%;
+            position: relative; /* Ensures this content stays above the background */
+            z-index: 1;
         }
 
         /* Animated Kitty Logo */
         .kitty-logo {
-            width: 120px; /* Adjust size as needed */
+            width: 120px;
             height: auto;
             margin-bottom: 2rem;
             animation: kitty-pulse 2.5s infinite alternate ease-in-out;
@@ -45,16 +71,16 @@
         @keyframes kitty-pulse {
             0% { 
                 transform: scale(1); 
-                filter: drop-shadow(0 0 4px rgba(31, 31, 31, 0.4)4)); 
+                filter: drop-shadow(0 0 4px rgba(255, 50, 50, 0.4)); 
             }
             100% { 
                 transform: scale(1.05); 
-                filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.8)8)); 
+                filter: drop-shadow(0 0 12px rgba(255, 50, 50, 0.8)); 
             }
         }
 
         h1 {
-            font-size: clamp(2rem, 5vw, 2.5rem); /* Responsive font size */
+            font-size: clamp(2rem, 5vw, 2.5rem);
             font-weight: 600;
             margin-bottom: 1rem;
             text-transform: uppercase;
@@ -77,11 +103,12 @@
         }
 
         .time-card {
-            background: #1e1e1e;
+            background: rgba(30, 30, 30, 0.7); /* Made slightly transparent */
             padding: 1rem 1.5rem;
             border-radius: 8px;
             border: 1px solid #2a2a2a;
             min-width: 90px;
+            backdrop-filter: blur(5px); /* Frosted glass effect */
         }
 
         .time-card span {
@@ -113,12 +140,20 @@
     </style>
 </head>
 <body>
+    
+    <video playsinline autoplay muted loop id="bg-video">
+        <source src="/PushpunkPromo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay"></div>
+
     <div class="container">
         
         <img src="/Kitty.svg" alt="Animated punk kitty logo" class="kitty-logo">
 
         <h1>THE REBELLION IS COMING</h1>
         <p>pushpunk.com</p>
+        
         <div id="countdown" class="countdown">
             <div class="time-card">
                 <span id="days">00</span>
